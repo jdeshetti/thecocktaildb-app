@@ -101,80 +101,52 @@ const cocktailSearch = {
   }, // end of renderSearchResults
 
   
-  loadCocktailDetails( id ){
-
-    console.log( `the ID of individual cocktail:`, id );
-
-    axios.get( this.config.COCKTAILDB_DETAILED_URL, {
+  
+  
+  
+  // Adjust the loadCocktailDetails function
+  loadCocktailDetails(id) {
+    axios.get(this.config.COCKTAILDB_DETAILED_URL, {
       params: {
         i: id
-
       }
     })
-      .then( res => {
-        console.log( 'data:', res.data);//to check the drinks data
-
+      .then(res => {
+        console.log( 'data:', res.data.drinks[0]);//to check the drinks data
+        if (res.data.drinks) {
+        this.renderCocktailDetails(res.data.drinks[0]); // Assuming only one drink is returned
+        } else {
+        console.warn('No details found for this cocktail ID:', id);
+        }
       })
-      .catch( err => {
-        console.warn('Please search again with the correct drink name', err );
-        //to display message to user in DOM if no serach was sfound
+      .catch(err => {
+      console.warn('Error fetching cocktail details:', err);
       });
+  },
 
-
-
-
-
-
-  }, //end of loadCockTailDetails
-
-
-
-  /*renderCocktailDetails( drink ){
-
+  // Adjust the renderCocktailDetails function to handle a single drink object
+  renderCocktailDetails(drink) {
     this.dom.searchResults.style.display = 'none';
+    this.dom.cocktailDetails.style.display = 'block';
+    this.dom.cocktailDetails.innerHTML = ''; // Clear previous details
 
-    this.dom.cocktailDetails.style.display = 'block'; // unhide
-    this.dom.cocktailDetails.replaceChildren(); // clear
-
-    const headingTag = document.createElement( 'h2' );
+    const headingTag = document.createElement('h2');
     headingTag.innerHTML = drink.strDrink;
-    this.don.cocktailDetails.appendChild( headingTag );
+    this.dom.cocktailDetails.appendChild(headingTag);
 
+  
+  
+    const categoryTag = document.createElement('p');
+    categoryTag.innerHTML = `Category: ${drink.strCategory}`;
+    this.dom.cocktailDetails.appendChild(categoryTag);
+  
 
-
-
-
-
-
-
-
-  },//end of renderCocktailDetails*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    // Display the image
+    const imgNode = document.createElement('img');
+    imgNode.src = drink.strDrinkThumb;
+    imgNode.alt = drink.strDrink;
+    this.dom.cocktailDetails.appendChild(imgNode);
+  },
 }; // cocktailSearch main app object
 
 
