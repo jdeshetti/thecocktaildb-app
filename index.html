@@ -11,20 +11,33 @@
   <script src="js/main.js" defer></script>
   <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
 
+  <div class="header">
+    <div class="description">
     <h1>Cocktail Searchr</h1>
+    <p>Welcome to Cocktail Searchr! Find your favorite cocktails and explore new recipes.</p>
+  </div>
+  <nav>
+    <ul class="menu">
+      <li><a href="#">Home</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Cocktails</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+  </nav>
 
-    <form id="searchForm">
-  
-      <input type="text" id="searchText" placeholder="Enter your search here...">
+  </div>
 
-      <button>Search!</button>
-    </form>
+  <form id="searchForm">
+    <input type="text" id="searchText" placeholder="Enter your search here...">
+    <button>Search!</button>
+  </form>
 
-  <div id="results"></div>
+  <div id="cocktailresults"></div>
 
-  <div id="details"></div>
+  <div id="cocktaildetails"></div>
 
 </body>
 </html>

@@ -1,37 +1,74 @@
 body {
   font-family: Arial, sans-serif;
-  background-color: yellowgreen;
-  text-align: center;
   margin: 0;
   padding: 0;
+  background-image: url('https://www.foodandwine.com/thmb/_vhCneUwUjSLcCO39jSSVsY9iwM=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/Kettle-Cove-FT-recipe0519-694374f1ec1343d59286d9bb1efe0ef0.jpg');
+  background-size: cover;
+  background-position: center;
+  color: rgb(66, 0, 128);
 }
 
-h1 {
-  color: #333;
-  margin-top: 50px;
+.header {
+  padding: 20px;
+  text-align: center;
+}
+
+.description {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.description h1 {
+  font-size: 6em;
+  margin-bottom: 10px;
+}
+
+.menu {
+  list-style-type: none;
+  padding: 0;
+  text-align: right;
+}
+
+.menu li {
+  display: inline;
+  margin-left: 20px;
+}
+
+.menu a {
+  text-decoration: none;
+  color: #fff;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.menu a:hover {
+  color: #ffd700;
 }
 
 #searchForm {
+  text-align: center;
   margin-top: 20px;
 }
 
 input[type="text"] {
   padding: 10px;
   width: 300px;
-  border: 1px solid #ccc;
+  border: 1px solid #fff;
   border-radius: 5px;
   margin-right: 10px;
+  background-color: rgba(255, 255, 255, 0.8);
 }
 
 button {
   padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
+  background-color: #ffd700;
+  color: #fff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 button:hover {
-  background-color: #0056b3;
+  background-color: #ffc800;
 }
