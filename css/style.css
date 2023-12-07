@@ -2,7 +2,7 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background-image: url('https://www.foodandwine.com/thmb/_vhCneUwUjSLcCO39jSSVsY9iwM=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/Kettle-Cove-FT-recipe0519-694374f1ec1343d59286d9bb1efe0ef0.jpg');
+  background-color: aqua;
   background-size: cover;
   background-position: center;
   color: rgb(66, 0, 128);
@@ -72,3 +72,20 @@ button {
 button:hover {
   background-color: #ffc800;
 }
+
+#cocktailresults img {
+  padding-right: 7px;
+  cursor: pointer;
+
+}
+
+#cocktailresults img:hover {
+  border: 3px solid red;
+
+}
+
+#searchForm {
+  padding-bottom: 2rem;
+}
+
+
