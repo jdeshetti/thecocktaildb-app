@@ -61,11 +61,18 @@ const cocktailSearch = {
 
   renderLatestCocktails(drinks) {
     console.log(`latest drinks:`, drinks)
-
+    const heading = document.createElement('h2');
+    heading.textContent = 'Latest Cocktails';
+    latestcocktailsheading.appendChild(heading);
+    
     for (const drink of drinks) {
       console.log( drink.strDrink);//to check the title of the drink in the console
       const cocktailContainer = document.createElement('div');
       cocktailContainer.classList.add('cocktail-container');
+
+      //Adding a heading for latest Cocktails
+
+      
 
       const titleNode = document.createElement('h3');
       titleNode.textContent = drink.strDrink;
@@ -161,7 +168,6 @@ const cocktailSearch = {
   
   
   
-  // Adjust the loadCocktailDetails function
   loadCocktailDetails(id) {
     axios.get(this.config.COCKTAILDB_DETAILED_URL, {
       params: {

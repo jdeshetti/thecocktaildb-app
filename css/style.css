@@ -100,15 +100,15 @@ button:hover {
 
   display: inline-block;
   align-items: right;
-  max-width: 600px; /* Adjust this as needed */
+  max-width: 600px; 
   margin: 20px auto;
 }
-/* Style the image */
+
 .cocktail-container img {
-  max-width: 300px; /* Adjust this as needed */
-  margin-right: 20px; /* Spacing between the image and details */
+  max-width: 300px; 
+  margin-right: 20px; 
 }
-/* Style the ingredients section */
+
 .ingredients-section,
 .instructions-section {
   
@@ -117,8 +117,16 @@ button:hover {
   margin-bottom: 15px;
 }
 
-/* Additional styling for headings */
+
 .ingredients-section h3,
 .instructions-section h3 {
   margin-bottom: 5px;
 }
+
+#latestcocktailsheading {
+  text-align: center;
+  font-size: 2em;
+  font-weight: bold;
+  
+}
+
