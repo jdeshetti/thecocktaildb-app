@@ -1,6 +1,3 @@
-console.log("Welcome to TheCockTail Search App");
-console.log( axios );
-
 //Creating a cocktailsearch object and storing all the required parameters and functions here
 
 const cocktailSearch = {
@@ -17,19 +14,20 @@ const cocktailSearch = {
 
     this.dom = {
       latestCocktails: document.querySelector( '#latestCocktails' ),
-      backToHomeButton: document.querySelector( 'backToHomeButton' ),
+      backToHomeButton: document.querySelector( '#backToHomeButton' ),
       searchForm: document.querySelector( '#searchForm' ),
       searchText: document.querySelector( '#searchText' ),
       searchResults: document.querySelector( '#cocktailresults' ),
       cocktailDetails: document.querySelector( '#cocktaildetails' )
     }; //end of this.dom
 
-    console.log( this.dom.latestCocktails );//to check this.dom information
-    console.log( this.dom.searchForm );//to check this.dom information
-    //handling the searchForm by addeventListener
-
+    //to check this.dom information
+    console.log( this.dom.latestCocktails );
+    console.log( this.dom.searchForm );
+    
     this.loadLatestCocktails();
 
+    //handling the searchForm by addeventListener
     this.dom.searchForm.addEventListener('submit', ev => {
       ev.preventDefault(); //to stop reloading the page
       this.loadSearchResults( this.dom.searchText.value);
@@ -41,17 +39,15 @@ const cocktailSearch = {
       console.log(`clicked image:`, ev.target.dataset.id);//to check the ID is displaying?
       this.loadCocktailDetails( ev.target.dataset.id);
       
-    }); //cocktailimg click result handler
+    }); //cocktail img click result handler
 
-
-
-
-  }, // end of initUi function
+    }, // end of initUi function
 
   loadLatestCocktails() {
     axios.get(this.config.COCKTAILDB_LATEST_URL)
       .then(res => {
         console.log(`latest cocktails data:`, res.data.drinks);
+        //this.clearLatestResults();
         this.renderLatestCocktails(res.data.drinks);
       })
       .catch(err => {
@@ -61,18 +57,11 @@ const cocktailSearch = {
 
   renderLatestCocktails(drinks) {
     console.log(`latest drinks:`, drinks)
-    const heading = document.createElement('h2');
-    heading.textContent = 'Latest Cocktails';
-    latestcocktailsheading.appendChild(heading);
-    
+        
     for (const drink of drinks) {
       console.log( drink.strDrink);//to check the title of the drink in the console
       const cocktailContainer = document.createElement('div');
-      cocktailContainer.classList.add('cocktail-container');
-
-      //Adding a heading for latest Cocktails
-
-      
+      cocktailContainer.classList.add('cocktail-container');    
 
       const titleNode = document.createElement('h3');
       titleNode.textContent = drink.strDrink;
@@ -84,11 +73,12 @@ const cocktailSearch = {
       cocktailContainer.appendChild(titleNode);
       cocktailContainer.appendChild(imgNode);
 
-      latestCocktails.appendChild(cocktailContainer);
+      this.dom.latestCocktails.appendChild(cocktailContainer);
     }
     
   },//end of renderLatestCocktails
 
+ 
   loadSearchResults( searchText ){
 
     console.log( `Text in loadsearchResults:`, searchText );//to check the serachForm is taking input or not
@@ -96,13 +86,13 @@ const cocktailSearch = {
     axios.get( this.config.COCKTAILDB_BASE_URL, {
       params: {
         s: searchText
-
       }
     })
       .then( res => {
         console.log( 'data:', res.data.drinks);//to check the drinks data
         this.clearLatestResults(); // Clear the latest results before rendering new ones
         this.renderSearchResults( res.data.drinks);
+        
         this.addBackToHomeButton(); // Back to home button after new search
       })
       .catch( err => {
@@ -119,20 +109,19 @@ const cocktailSearch = {
       window.location.href = 'http://127.0.0.1:5500/index.html?'; // Replace 'index.html' with your homepage URL
     });
   
-    
     backToHomeButton.innerHTML = ''; // Clear previous content
     backToHomeButton.appendChild(backButton);
   },
 
-  clearLatestResults() {
-    latestCocktails.innerHTML = ''; // Clear previous content
+  clearLatestResults(){
+    this.dom.latestCocktails.innerHTML = '';
   },
 
   renderSearchResults( drinks ){
 
     console.log( `in renderSearchResults:`, drinks );
 
-    this.dom.searchResults.replaceChildren(); // clear (loading message)
+    this.dom.searchResults.replaceChildren(); // clear loading message
     
     for( const drink of drinks ){
 
@@ -156,18 +145,11 @@ const cocktailSearch = {
       drinkContainer.appendChild(titleNode); // Append title before the image
       drinkContainer.appendChild(imgNode); // Append the image
     
-      this.dom.searchResults.appendChild(drinkContainer);
-
-      
-
+      this.dom.searchResults.appendChild(drinkContainer);      
     } // each drink
 
   }, // end of renderSearchResults
 
-  
-  
-  
-  
   loadCocktailDetails(id) {
     axios.get(this.config.COCKTAILDB_DETAILED_URL, {
       params: {
@@ -177,7 +159,9 @@ const cocktailSearch = {
       .then(res => {
         console.log( 'data:', res.data.drinks[0]);//to check the drinks data
         if (res.data.drinks) {
-        this.renderCocktailDetails(res.data.drinks[0]); // Assuming only one drink is returned
+        this.renderCocktailDetails(res.data.drinks[0]);
+         // Assuming only one drink is returned
+         
         } else {
         console.warn('No details found for this cocktail ID:', id);
         }
@@ -189,9 +173,12 @@ const cocktailSearch = {
 
   // Adjust the renderCocktailDetails function to handle a single drink object
   renderCocktailDetails(drink) {
+    
     this.dom.searchResults.style.display = 'none';
     this.dom.cocktailDetails.style.display = 'block';
+    
     this.dom.cocktailDetails.innerHTML = ''; // Clear previous details
+    this.dom.latestCocktails.innerHTML = '';// Clear previous details
 
     //created a div and stored in drinkcontainer and added cocktail-container lass
     const drinkContainer = document.createElement('div');
@@ -202,8 +189,6 @@ const cocktailSearch = {
     imgNode.src = drink.strDrinkThumb;
     imgNode.alt = drink.strDrink;
     drinkContainer.appendChild(imgNode);
-
-
 
     //Created a container for details of the cocktail
     const detailsContainer = document.createElement('div');
@@ -266,30 +251,11 @@ const cocktailSearch = {
     instructionsSection.appendChild(instructionsText);
 
     detailsContainer.appendChild(instructionsSection);
-
     drinkContainer.appendChild(detailsContainer);
-
-    this.dom.cocktailDetails.appendChild(drinkContainer);
-
-    const backButton = document.createElement('button');
-    backButton.textContent = 'Back to Results';
-    backButton.addEventListener('click', () => {
-      this.dom.cocktailDetails.style.display = 'none';
-      this.dom.searchResults.style.display = 'block';
-    });
-  
-    detailsContainer.appendChild(backButton);
-  
-    this.dom.cocktailDetails.appendChild(drinkContainer);
-    
-
-
-
-    
+    this.dom.cocktailDetails.appendChild(drinkContainer);    
   },
 
 }; // cocktailSearch main app object
-
 
 cocktailSearch.initUi();
 

@@ -23,28 +23,6 @@ body {
   margin-bottom: 10px;
 }
 
-.menu {
-  list-style-type: none;
-  padding: 0;
-  text-align: right;
-}
-
-.menu li {
-  display: inline;
-  margin-left: 50px;
-}
-
-.menu a {
-  text-decoration: none;
-  color: #fff;
-  font-weight: bold;
-  transition: color 0.3s ease;
-}
-
-.menu a:hover {
-  color: #ffd700;
-}
-
 #searchForm {
   text-align: center;
   margin-top: 20px;
@@ -71,6 +49,14 @@ button {
 
 button:hover {
   background-color: #ffc800;
+}
+
+#latestCocktails img:hover {
+  border: 3px solid red;
+  padding-right: 10px;
+  cursor: pointer;
+  display: inline;
+
 }
 
 #cocktailresults {
@@ -123,10 +109,5 @@ button:hover {
   margin-bottom: 5px;
 }
 
-#latestcocktailsheading {
-  text-align: center;
-  font-size: 2em;
-  font-weight: bold;
-  
-}
+
 
