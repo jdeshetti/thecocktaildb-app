@@ -36,20 +36,26 @@ const cocktailSearch = {
 
     this.dom.searchText.focus();
 
+    this.dom.latestCocktails.addEventListener('click', ev => {
+      if (ev.target.tagName === 'IMG') {
+        console.log(`img clicked and ID is:`, ev.target.dataset.id);
+        this.loadCocktailDetails(ev.target.dataset.id, true);
+      }
+    });
+  
     this.dom.searchResults.addEventListener('click', ev => {
-      console.log(`clicked image:`, ev.target.dataset.id);//to check the ID is displaying?
-      this.loadCocktailDetails( ev.target.dataset.id);
-      
-    }); //cocktail img click result handler
+      if (ev.target.tagName === 'IMG') {
+        console.log(`img clicked and ID is:`, ev.target.dataset.id);
+        this.loadCocktailDetails(ev.target.dataset.id, false);
+      }
+    });
 
 
     }, // end of initUi function
 
     toggleSearchForm(enable) {
       this.dom.searchForm.style.display = enable ? 'block' : 'none';
-      
     },
-
 
   loadLatestCocktails() {
     axios.get(this.config.COCKTAILDB_LATEST_URL)
@@ -63,13 +69,13 @@ const cocktailSearch = {
       });
   }, //end of loadLatestCocktails
 
+
   renderLatestCocktails(drinks) {
     console.log(`latest drinks:`, drinks)
     const latestCocktailsHeading = document.createElement('h2');
     latestCocktailsHeading.textContent = 'Latest Cocktails';
     this.dom.latestCocktails.appendChild(latestCocktailsHeading);
-
-        
+      
     for (const drink of drinks) {
       console.log( drink.strDrink);//to check the title of the drink in the console
       const cocktailContainer = document.createElement('div');
@@ -82,6 +88,9 @@ const cocktailSearch = {
       imgNode.src = drink.strDrinkThumb;
       imgNode.alt = drink.strDrink;
 
+      //we know the drinkid here and so we can use it to get ID when img clciked
+      imgNode.dataset.id = drink.idDrink;
+ 
       cocktailContainer.appendChild(titleNode);
       cocktailContainer.appendChild(imgNode);
 
@@ -89,7 +98,6 @@ const cocktailSearch = {
     }
     
   },//end of renderLatestCocktails
-
  
   loadSearchResults( searchText ){
 
@@ -117,9 +125,9 @@ const cocktailSearch = {
   addBackToHomeButton() {
     const backButton = document.createElement('button');
     backButton.textContent = 'Back to Home Page';
-    backButton.addEventListener('click', () => {
-      window.location.href = 'http://127.0.0.1:5500/index.html?'; // Replace 'index.html' with your homepage URL
-    });
+      backButton.addEventListener('click', () => {
+        window.location.href = 'http://127.0.0.1:5500/index.html?'; // Replace 'index.html' with your homepage URL
+      });
   
     this.dom.backToHomeButton.innerHTML = ''; // Clear previous content
     this.dom.backToHomeButton.appendChild(backButton);
@@ -130,7 +138,6 @@ const cocktailSearch = {
   },
 
   renderSearchResults( drinks ){
-
     console.log( `in renderSearchResults:`, drinks );
 
     this.dom.searchResults.replaceChildren(); // clear loading message
@@ -161,26 +168,23 @@ const cocktailSearch = {
     } // each drink
 
   }, // end of renderSearchResults
-
-  loadCocktailDetails(id) {
+   
+  loadCocktailDetails(id, isLatestCocktail = false) {
     this.toggleSearchForm(false);
-    axios.get(this.config.COCKTAILDB_DETAILED_URL, {
-      params: {
-        i: id
-      }
-    })
-      .then(res => {
-        console.log( 'data:', res.data.drinks[0]);//to check the drinks data
-        if (res.data.drinks) {
-        this.renderCocktailDetails(res.data.drinks[0]);// Assuming only one drink is returned
-        
-         
-        } else {
-        console.warn('No details found for this cocktail ID:', id);
+    const url = isLatestCocktail ? this.config.COCKTAILDB_LATEST_URL : this.config.COCKTAILDB_DETAILED_URL;
+  
+    axios.get(url, {
+        params: {
+          i: id
         }
       })
+      .then(res => {
+        console.log('data:', res.data.drinks[0]); // Check the drinks data
+        this.renderCocktailDetails(res.data.drinks[0]);
+        
+      })
       .catch(err => {
-      console.warn('Error fetching cocktail details:', err);
+        console.warn('Error fetching cocktail details:', err);
       });
   },
 
@@ -190,8 +194,9 @@ const cocktailSearch = {
     this.dom.searchResults.style.display = 'none';
     this.dom.cocktailDetails.style.display = 'block';
     
+    
     this.dom.cocktailDetails.innerHTML = ''; // Clear previous details
-    //this.dom.latestCocktails.innerHTML = '';// Clear previous details
+    this.dom.latestCocktails.innerHTML = '';// Clear previous details
     this.dom.backToHomeButton.innerHTML = '';//clear the backtohomebutton
 
     
