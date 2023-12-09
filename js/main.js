@@ -15,6 +15,7 @@ const cocktailSearch = {
     this.dom = {
       latestCocktails: document.querySelector( '#latestCocktails' ),
       backToHomeButton: document.querySelector( '#backToHomeButton' ),
+      backToSearchResults: document.querySelector( '#backToSearchResults' ),
       searchForm: document.querySelector( '#searchForm' ),
       searchText: document.querySelector( '#searchText' ),
       searchResults: document.querySelector( '#cocktailresults' ),
@@ -41,7 +42,14 @@ const cocktailSearch = {
       
     }); //cocktail img click result handler
 
+
     }, // end of initUi function
+
+    toggleSearchForm(enable) {
+      this.dom.searchForm.style.display = enable ? 'block' : 'none';
+      
+    },
+
 
   loadLatestCocktails() {
     axios.get(this.config.COCKTAILDB_LATEST_URL)
@@ -57,6 +65,10 @@ const cocktailSearch = {
 
   renderLatestCocktails(drinks) {
     console.log(`latest drinks:`, drinks)
+    const latestCocktailsHeading = document.createElement('h2');
+    latestCocktailsHeading.textContent = 'Latest Cocktails';
+    this.dom.latestCocktails.appendChild(latestCocktailsHeading);
+
         
     for (const drink of drinks) {
       console.log( drink.strDrink);//to check the title of the drink in the console
@@ -109,8 +121,8 @@ const cocktailSearch = {
       window.location.href = 'http://127.0.0.1:5500/index.html?'; // Replace 'index.html' with your homepage URL
     });
   
-    backToHomeButton.innerHTML = ''; // Clear previous content
-    backToHomeButton.appendChild(backButton);
+    this.dom.backToHomeButton.innerHTML = ''; // Clear previous content
+    this.dom.backToHomeButton.appendChild(backButton);
   },
 
   clearLatestResults(){
@@ -151,6 +163,7 @@ const cocktailSearch = {
   }, // end of renderSearchResults
 
   loadCocktailDetails(id) {
+    this.toggleSearchForm(false);
     axios.get(this.config.COCKTAILDB_DETAILED_URL, {
       params: {
         i: id
@@ -159,8 +172,8 @@ const cocktailSearch = {
       .then(res => {
         console.log( 'data:', res.data.drinks[0]);//to check the drinks data
         if (res.data.drinks) {
-        this.renderCocktailDetails(res.data.drinks[0]);
-         // Assuming only one drink is returned
+        this.renderCocktailDetails(res.data.drinks[0]);// Assuming only one drink is returned
+        
          
         } else {
         console.warn('No details found for this cocktail ID:', id);
@@ -171,14 +184,17 @@ const cocktailSearch = {
       });
   },
 
-  // Adjust the renderCocktailDetails function to handle a single drink object
+  // renderCocktailDetails function to handle a single drink object
   renderCocktailDetails(drink) {
     
     this.dom.searchResults.style.display = 'none';
     this.dom.cocktailDetails.style.display = 'block';
     
     this.dom.cocktailDetails.innerHTML = ''; // Clear previous details
-    this.dom.latestCocktails.innerHTML = '';// Clear previous details
+    //this.dom.latestCocktails.innerHTML = '';// Clear previous details
+    this.dom.backToHomeButton.innerHTML = '';//clear the backtohomebutton
+
+    
 
     //created a div and stored in drinkcontainer and added cocktail-container lass
     const drinkContainer = document.createElement('div');
@@ -252,7 +268,29 @@ const cocktailSearch = {
 
     detailsContainer.appendChild(instructionsSection);
     drinkContainer.appendChild(detailsContainer);
-    this.dom.cocktailDetails.appendChild(drinkContainer);    
+
+    this.dom.cocktailDetails.appendChild(drinkContainer);
+    this.addBackToSearchButton();    
+  },
+
+  addBackToSearchButton() {
+    const backToSearchButton = document.createElement('button');
+    backToSearchButton.textContent = 'Back to Search Results';
+    backToSearchButton.addEventListener('click', () => {
+      
+      this.dom.searchResults.style.display = 'block';
+      this.dom.cocktailDetails.style.display = 'none';
+      this.toggleSearchForm(true);
+      this.addBackToHomeButton();
+      this.hideBackToSearchButton(); // To hide the "Back to Search Results" button
+    });
+
+    this.dom.backToSearchResults.innerHTML = '';
+    this.dom.backToSearchResults.appendChild(backToSearchButton);
+  },
+
+  hideBackToSearchButton() {
+    this.dom.backToSearchResults.innerHTML = '';
   },
 
 }; // cocktailSearch main app object
