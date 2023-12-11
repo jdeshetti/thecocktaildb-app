@@ -16,7 +16,7 @@
 
 
 ### A screenshot or two of the app: 
-![Login](/screenshots/picture1.jpg)
+![Login](/screenshots/Picture1.jpg)
     
 
     
