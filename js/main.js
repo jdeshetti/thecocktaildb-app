@@ -126,7 +126,7 @@ const cocktailSearch = {
     const backButton = document.createElement('button');
     backButton.textContent = 'Back to Home Page';
       backButton.addEventListener('click', () => {
-        window.location.href = 'http://127.0.0.1:5500/index.html?'; // Replace 'index.html' with your homepage URL
+        window.location.href = 'https://jdeshetti.github.io/thecocktaildb-app/'; 
       });
   
     this.dom.backToHomeButton.innerHTML = ''; // Clear previous content
