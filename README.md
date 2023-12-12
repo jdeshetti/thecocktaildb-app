@@ -22,8 +22,10 @@ On each search results, this app provides an option of selecting your favourite 
 
 
 ### A screenshot or two of the app: 
-![HomePage](/screenshots/Home Page.jpg)
-![ResultsPage](/screenshots/Home Page-List of results.jpg)
+![HomePage](/screenshots/Home Page.jpg),
+
+![ResultsPage](/screenshots/Home Page-List of results.jpg),
+
 ![DetailedResultsPage](/screenshots/Results-Detailed-Page.jpg)
     
 
