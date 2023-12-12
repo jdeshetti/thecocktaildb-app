@@ -24,9 +24,37 @@
     <input type="text" id="searchText" placeholder="Search Cocktails here...">
     <button>Search!</button>
 
+
+
     
   </form>
-  
+
+  <!-- HTML for Filter by Alcoholic Type -->
+<label for="filterByAlcoholic">Filter by Alcoholic Type:</label>
+<select id="filterByAlcoholic">
+  <option value="None">Select one option</option>
+  <option value="Alcoholic">Alcoholic</option>
+  <option value="Non_Alcoholic">Non-Alcoholic</option>
+</select>
+
+<!-- HTML for Filter by Category -->
+<label for="filterByCategory">Filter by Category:</label>
+<select id="filterByCategory">
+  <option value="None">Select one option</option>
+  <option value="Ordinary_Drink">Ordinary Drink</option>
+  <option value="Cocktail">Cocktail</option>
+  <!-- Add more options as per available categories -->
+</select>
+
+<!-- HTML for Filter by Glass -->
+<label for="filterByGlass">Filter by Glass:</label>
+<select id="filterByGlass">
+  <option value="None">Select one option</option>
+  <option value="Cocktail_glass">Cocktail Glass</option>
+  <option value="Champagne_flute">Champagne Flute</option>
+  <!-- Add more options as per available glass types -->
+</select>
+
   
 
   <div id="latestCocktails"></div>

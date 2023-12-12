@@ -9,17 +9,19 @@ body {
 }
 
 .header {
-  padding: 5px;
+  padding: 10px;
   text-align: center;
 }
 
 .description {
   max-width: 800px;
+  max-height: 800px;
+  max-inline-size: none;
   margin: 0 auto;
 }
 
 .description h1 {
-  font-size: 6em;
+  font-size: 4em;
   margin-bottom: 10px;
 }
 
@@ -109,5 +111,9 @@ button:hover {
   margin-bottom: 5px;
 }
 
+#backToHomeButton {
+
+  padding-top: 10px;
+}
 
 

@@ -19,7 +19,10 @@ const cocktailSearch = {
       searchForm: document.querySelector( '#searchForm' ),
       searchText: document.querySelector( '#searchText' ),
       searchResults: document.querySelector( '#cocktailresults' ),
-      cocktailDetails: document.querySelector( '#cocktaildetails' )
+      cocktailDetails: document.querySelector( '#cocktaildetails' ),
+      filterByAlcoholic: document.querySelector('#filterByAlcoholic'),
+      filterByCategory: document.querySelector('#filterByCategory'),
+      filterByGlass: document.querySelector('#filterByGlass')
     }; //end of this.dom
 
     //to check this.dom information
@@ -48,6 +51,21 @@ const cocktailSearch = {
         console.log(`img clicked and ID is:`, ev.target.dataset.id);
         this.loadCocktailDetails(ev.target.dataset.id, false);
       }
+    });
+
+    this.dom.filterByAlcoholic.addEventListener('change', ev => {
+      const selectedAlcoholicType = ev.target.value;
+      this.loadByAlcoholicType(selectedAlcoholicType);
+    });
+
+    this.dom.filterByCategory.addEventListener('change', ev => {
+      const selectedCategory = ev.target.value;
+      this.loadByCategory(selectedCategory);
+    });
+
+    this.dom.filterByGlass.addEventListener('change', ev => {
+      const selectedGlass = ev.target.value;
+      this.loadByGlass(selectedGlass);
     });
 
 
@@ -298,6 +316,47 @@ const cocktailSearch = {
     this.dom.backToSearchResults.innerHTML = '';
   },
 
+  loadByAlcoholicType(type) {
+    const url = `https://www.thecocktaildb.com/api/json/v1/1/filter.php?a=${type}`;
+    axios.get(url)
+      .then(res => {
+        console.log(`Filtered by ${type} drinks:`, res.data.drinks);
+        this.clearLatestResults();
+        this.renderSearchResults(res.data.drinks);
+        this.addBackToHomeButton();
+      })
+      .catch(err => {
+        console.warn('Error fetching filtered drinks:', err);
+      });
+  },
+
+  loadByCategory(category) {
+    const url = `https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=${category}`;
+    axios.get(url)
+      .then(res => {
+        console.log(`Filtered by ${category} drinks:`, res.data.drinks);
+        this.clearLatestResults();
+        this.renderSearchResults(res.data.drinks);
+        this.addBackToHomeButton();
+      })
+      .catch(err => {
+        console.warn('Error fetching filtered drinks:', err);
+      });
+  },
+
+  loadByGlass(glass) {
+    const url = `https://www.thecocktaildb.com/api/json/v1/1/filter.php?g=${glass}`;
+    axios.get(url)
+      .then(res => {
+        console.log(`Filtered by ${glass} drinks:`, res.data.drinks);
+        this.clearLatestResults();
+        this.renderSearchResults(res.data.drinks);
+        this.addBackToHomeButton();
+      })
+      .catch(err => {
+        console.warn('Error fetching filtered drinks:', err);
+      });
+  }
 }; // cocktailSearch main app object
 
 cocktailSearch.initUi();
