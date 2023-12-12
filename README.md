@@ -18,29 +18,29 @@ Glass: Cocktail glass or Champagne flute
 Each search result presents users with the ability to select their favorite drink. Furthermore, the platform offers detailed instructions on how to prepare the selected cocktail, enhancing the user experience and encouraging experimentation with new drinks.
 
   
-### wireframes and diagrams used during the planning stage:
+## wireframes and diagrams used during the planning stage:
 ![Wireframe](/screenshots/Wireframe.jpg)
 
 
-### A screenshot or two of the app: 
+## A screenshot or two of the app: 
 ![HomePage](/screenshots/HomePage.jpg)
 
 ![ResultsPage](/screenshots/Results-Detailed-Page.jpg)
     
 
-#### A technical hurdle:
+## A technical hurdle:
 
 Creating a website that works well on various devices and screen sizes (desktops, tablets, mobiles) requires a deep understanding of responsive design techniques. Achieving a consistent user experience across devices can be complex. I need to learn some of these techniques and implement them in my futur projects.
 
 
     
-##### Something that I learned and enjoyed:
+## Something that I learned and enjoyed:
 
 Developing front-end applications using JavaScript is really intersting and Fun. I enjoyed while getting API requests from the database and organize them in a way you want for front-end websites and good looking layouts and designs were also really fun.
 
 
  
-###### A new technology used:
+## A new technology used:
 
 CSS
 HTML
@@ -48,7 +48,7 @@ JavaScript
 
 
 
-###### Wishlist Future Features
+## Wishlist Future Features
 
 In the future, I plan to incorporate additional features like a navigation menu comprising Home, About, Popular Cocktails, and Contact sections.
 
