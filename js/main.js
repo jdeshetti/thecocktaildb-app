@@ -202,6 +202,7 @@ const cocktailSearch = {
   }, // end of renderSearchResults( drinks )
    
   loadCocktailDetails(id, isLatestCocktail = false) {
+
     this.toggleSearchForm(false);
 
     const url = isLatestCocktail ? this.config.COCKTAILDB_LATEST_URL : this.config.COCKTAILDB_DETAILED_URL;
@@ -222,11 +223,23 @@ const cocktailSearch = {
 
   renderCocktailDetails(drink) {
     
+    //// Hide elements not needed when rendering cocktail details
     this.dom.searchResults.style.display = 'none';
-    this.dom.cocktailDetails.style.display = 'block';  
-    this.dom.cocktailDetails.innerHTML = ''; // Clear previous details
-    this.dom.latestCocktails.innerHTML = '';// Clear previous details
-    this.dom.backToHomeButton.innerHTML = '';//clear the backtohomebutton
+    this.dom.cocktailDetails.style.display = 'block';
+    this.dom.filterByAlcoholic.style.display = 'none';
+    this.dom.filterByCategory.style.display = 'none';
+    this.dom.filterByGlass.style.display = 'none';
+    document.querySelector('label[for="filterByAlcoholic"]').style.display = 'none';
+    document.querySelector('label[for="filterByCategory"]').style.display = 'none';
+    document.querySelector('label[for="filterByGlass"]').style.display = 'none';
+
+    // Clear previous details  
+    this.dom.cocktailDetails.innerHTML = ''; 
+    this.dom.latestCocktails.innerHTML = '';
+    this.dom.backToHomeButton.innerHTML = '';
+    this.dom.filterByAlcoholic.innerHTML = '';
+    this.dom.filterByCategory.innerHTML = '';
+    this.dom.filterByGlass.innerHTML = '';
 
     //created a div and stored in drinkcontainer and added cocktail-container lass
     const drinkContainer = document.createElement('div');
@@ -247,23 +260,6 @@ const cocktailSearch = {
     headingTag.innerHTML = drink.strDrink;
     detailsContainer.appendChild(headingTag);
     this.dom.cocktailDetails.appendChild(headingTag);
-
-    // Display Tags
-    if (drink.strTags) {
-      const tagsSection = document.createElement('div');
-      tagsSection.classList.add('tags-section');
-
-      const tagsHeading = document.createElement('h3');
-      tagsHeading.textContent = 'Tags:';
-      tagsSection.appendChild(tagsHeading);
-
-      const tagsText = document.createElement('p');
-      tagsText.textContent = drink.strTags;
-      tagsSection.appendChild(tagsText);
-
-      detailsContainer.appendChild(tagsSection);
-
-    }//end of if
 
     // Create a section for ingredients
     const ingredientsSection = document.createElement('div');
@@ -303,6 +299,7 @@ const cocktailSearch = {
     drinkContainer.appendChild(detailsContainer);
 
     this.dom.cocktailDetails.appendChild(drinkContainer);
+
     this.addBackToSearchButton(); 
       
   },//renderCocktailDetails(drink)
