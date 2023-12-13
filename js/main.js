@@ -1,11 +1,12 @@
-//Creating a cocktailsearch object and storing all the required parameters and functions here
+//Creating a cocktailSearch object and storing all the required parameters and functions here
 
 const cocktailSearch = {
 
   config: {
     COCKTAILDB_LATEST_URL: 'https://www.thecocktaildb.com/api/json/v2/9973533/latest.php',
     COCKTAILDB_BASE_URL: 'https://www.thecocktaildb.com/api/json/v1/1/search.php?',
-    COCKTAILDB_DETAILED_URL: 'https://www.thecocktaildb.com/api/json/v1/1/lookup.php?'
+    COCKTAILDB_DETAILED_URL: 'https://www.thecocktaildb.com/api/json/v1/1/lookup.php?',
+    COCKTAILDB_FILTER_URL: 'https://www.thecocktaildb.com/api/json/v1/1/filter.php?'
   },
 
   dom: {},
@@ -31,11 +32,11 @@ const cocktailSearch = {
     
     this.loadLatestCocktails();
 
-    //handling the searchForm by addeventListener
+    ////to submit an event in the searchForm, latestCocktails, searchResults, and other elements by addEventListener
     this.dom.searchForm.addEventListener('submit', ev => {
       ev.preventDefault(); //to stop reloading the page
       this.loadSearchResults( this.dom.searchText.value);
-    })//to submit an event in serachForm
+    })
 
     this.dom.searchText.focus();
 
@@ -68,25 +69,22 @@ const cocktailSearch = {
       this.loadByGlass(selectedGlass);
     });
 
+  }, // end of initUi()
 
-    }, // end of initUi function
-
-    toggleSearchForm(enable) {
-      this.dom.searchForm.style.display = enable ? 'block' : 'none';
-    },
+  toggleSearchForm(enable) {
+    this.dom.searchForm.style.display = enable ? 'block' : 'none';
+  },// end of toggleSearchForm()
 
   loadLatestCocktails() {
     axios.get(this.config.COCKTAILDB_LATEST_URL)
       .then(res => {
         console.log(`latest cocktails data:`, res.data.drinks);
-        //this.clearLatestResults();
         this.renderLatestCocktails(res.data.drinks);
       })
       .catch(err => {
         console.warn('Error fetching latest cocktails:', err);
       });
-  }, //end of loadLatestCocktails
-
+  }, //end of loadLatestCocktails()
 
   renderLatestCocktails(drinks) {
     console.log(`latest drinks:`, drinks)
@@ -96,6 +94,7 @@ const cocktailSearch = {
       
     for (const drink of drinks) {
       console.log( drink.strDrink);//to check the title of the drink in the console
+
       const cocktailContainer = document.createElement('div');
       cocktailContainer.classList.add('cocktail-container');    
 
@@ -113,12 +112,43 @@ const cocktailSearch = {
       cocktailContainer.appendChild(imgNode);
 
       this.dom.latestCocktails.appendChild(cocktailContainer);
-    }
-    
-  },//end of renderLatestCocktails
- 
-  loadSearchResults( searchText ){
+    }  
+  },//end of renderLatestCocktails()
 
+ clearLatestResults(){
+    this.dom.latestCocktails.innerHTML = '';
+  },//end of clearLatestResults()
+
+  addBackToHomeButton() {
+    const backButton = document.createElement('button');
+    backButton.textContent = 'Back to Home Page';
+      backButton.addEventListener('click', () => {
+        window.location.href = 'https://jdeshetti.github.io/thecocktaildb-app/'; 
+      });
+  
+    this.dom.backToHomeButton.innerHTML = ''; // Clear previous content
+    this.dom.backToHomeButton.appendChild(backButton);
+  },//end of addBackToHomeButton()
+
+  addBackToSearchButton() {
+    const backToSearchButton = document.createElement('button');
+    backToSearchButton.textContent = 'Back to Search Results';
+    backToSearchButton.addEventListener('click', () => {
+      this.dom.searchResults.style.display = 'block';
+      this.dom.cocktailDetails.style.display = 'none';
+      this.toggleSearchForm(true);
+      this.addBackToHomeButton();
+      this.hideBackToSearchButton(); // To hide the "Back to Search Results" button
+    });
+    this.dom.backToSearchResults.innerHTML = '';
+    this.dom.backToSearchResults.appendChild(backToSearchButton);
+  },//end of addBackToSearchButton()
+
+  hideBackToSearchButton() {
+    this.dom.backToSearchResults.innerHTML = '';
+  },//end of hideBackToSearchButton()
+
+  loadSearchResults( searchText ){
     console.log( `Text in loadsearchResults:`, searchText );//to check the serachForm is taking input or not
 
     axios.get( this.config.COCKTAILDB_BASE_URL, {
@@ -130,7 +160,6 @@ const cocktailSearch = {
         console.log( 'data:', res.data.drinks);//to check the drinks data
         this.clearLatestResults(); // Clear the latest results before rendering new ones
         this.renderSearchResults( res.data.drinks);
-        
         this.addBackToHomeButton(); // Back to home button after new search
       })
       .catch( err => {
@@ -138,22 +167,7 @@ const cocktailSearch = {
         //to display message to user in DOM if no serach wa sfound
       });
 
-  }, //end of loadSearchResults
-
-  addBackToHomeButton() {
-    const backButton = document.createElement('button');
-    backButton.textContent = 'Back to Home Page';
-      backButton.addEventListener('click', () => {
-        window.location.href = 'https://jdeshetti.github.io/thecocktaildb-app/'; 
-      });
-  
-    this.dom.backToHomeButton.innerHTML = ''; // Clear previous content
-    this.dom.backToHomeButton.appendChild(backButton);
-  },
-
-  clearLatestResults(){
-    this.dom.latestCocktails.innerHTML = '';
-  },
+  }, //end of loadSearchResults( searchText )
 
   renderSearchResults( drinks ){
     console.log( `in renderSearchResults:`, drinks );
@@ -185,39 +199,34 @@ const cocktailSearch = {
       this.dom.searchResults.appendChild(drinkContainer);      
     } // each drink
 
-  }, // end of renderSearchResults
+  }, // end of renderSearchResults( drinks )
    
   loadCocktailDetails(id, isLatestCocktail = false) {
     this.toggleSearchForm(false);
+
     const url = isLatestCocktail ? this.config.COCKTAILDB_LATEST_URL : this.config.COCKTAILDB_DETAILED_URL;
   
     axios.get(url, {
-        params: {
-          i: id
-        }
-      })
+      params: {
+        i: id
+      }
+    })
       .then(res => {
         console.log('data:', res.data.drinks[0]); // Check the drinks data
         this.renderCocktailDetails(res.data.drinks[0]);
-        
       })
       .catch(err => {
         console.warn('Error fetching cocktail details:', err);
       });
-  },
+  },//loadCocktailDetails(id, isLatestCocktail = false)
 
-  // renderCocktailDetails function to handle a single drink object
   renderCocktailDetails(drink) {
     
     this.dom.searchResults.style.display = 'none';
-    this.dom.cocktailDetails.style.display = 'block';
-    
-    
+    this.dom.cocktailDetails.style.display = 'block';  
     this.dom.cocktailDetails.innerHTML = ''; // Clear previous details
     this.dom.latestCocktails.innerHTML = '';// Clear previous details
     this.dom.backToHomeButton.innerHTML = '';//clear the backtohomebutton
-
-    
 
     //created a div and stored in drinkcontainer and added cocktail-container lass
     const drinkContainer = document.createElement('div');
@@ -252,8 +261,9 @@ const cocktailSearch = {
       tagsText.textContent = drink.strTags;
       tagsSection.appendChild(tagsText);
 
-    detailsContainer.appendChild(tagsSection);
-    }
+      detailsContainer.appendChild(tagsSection);
+
+    }//end of if
 
     // Create a section for ingredients
     const ingredientsSection = document.createElement('div');
@@ -272,8 +282,8 @@ const cocktailSearch = {
         const ingredientItem = document.createElement('p');
         ingredientItem.textContent = `${measure ? measure + ' ' : ''}${ingredient}`;
         ingredientsSection.appendChild(ingredientItem);
-      }
-    }
+      }//end of if
+    }//end of for
 
     detailsContainer.appendChild(ingredientsSection);
 
@@ -293,32 +303,16 @@ const cocktailSearch = {
     drinkContainer.appendChild(detailsContainer);
 
     this.dom.cocktailDetails.appendChild(drinkContainer);
-    this.addBackToSearchButton();    
-  },
-
-  addBackToSearchButton() {
-    const backToSearchButton = document.createElement('button');
-    backToSearchButton.textContent = 'Back to Search Results';
-    backToSearchButton.addEventListener('click', () => {
+    this.addBackToSearchButton(); 
       
-      this.dom.searchResults.style.display = 'block';
-      this.dom.cocktailDetails.style.display = 'none';
-      this.toggleSearchForm(true);
-      this.addBackToHomeButton();
-      this.hideBackToSearchButton(); // To hide the "Back to Search Results" button
-    });
-
-    this.dom.backToSearchResults.innerHTML = '';
-    this.dom.backToSearchResults.appendChild(backToSearchButton);
-  },
-
-  hideBackToSearchButton() {
-    this.dom.backToSearchResults.innerHTML = '';
-  },
+  },//renderCocktailDetails(drink)
 
   loadByAlcoholicType(type) {
-    const url = `https://www.thecocktaildb.com/api/json/v1/1/filter.php?a=${type}`;
-    axios.get(url)
+    axios.get( this.config.COCKTAILDB_FILTER_URL, {
+      params: {
+        a: type
+      }
+    })
       .then(res => {
         console.log(`Filtered by ${type} drinks:`, res.data.drinks);
         this.clearLatestResults();
@@ -331,8 +325,11 @@ const cocktailSearch = {
   },
 
   loadByCategory(category) {
-    const url = `https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=${category}`;
-    axios.get(url)
+    axios.get( this.config.COCKTAILDB_FILTER_URL, {
+      params: {
+        c: category
+      }
+    })
       .then(res => {
         console.log(`Filtered by ${category} drinks:`, res.data.drinks);
         this.clearLatestResults();
@@ -345,8 +342,11 @@ const cocktailSearch = {
   },
 
   loadByGlass(glass) {
-    const url = `https://www.thecocktaildb.com/api/json/v1/1/filter.php?g=${glass}`;
-    axios.get(url)
+    axios.get( this.config.COCKTAILDB_FILTER_URL, {
+      params: {
+        g: glass
+      }
+    })
       .then(res => {
         console.log(`Filtered by ${glass} drinks:`, res.data.drinks);
         this.clearLatestResults();
